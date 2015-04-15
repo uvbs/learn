@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		13A8D45A1ACD1A2200DC650C /* hw_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13A8D4591ACD1A2200DC650C /* hw_utils.mm */; };
+		B13C80FA1A8375F900A62E91 /* OSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B13C80F91A8375F900A62E91 /* OSWatcher.m */; };
+		B1C5DE751A3EEE68000649E7 /* libhardwareCodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C5DE691A3EEE68000649E7 /* libhardwareCodec.a */; };
+		B1C5DE991A3EF000000649E7 /* VideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C5DE981A3EF000000649E7 /* VideoEncoder.m */; };
+		B1C5DE9C1A3EF00E000649E7 /* VideoDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C5DE9B1A3EF00E000649E7 /* VideoDecoder.m */; };
+		B1C5DEA11A3FD807000649E7 /* hw_codec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1C5DEA01A3FD807000649E7 /* hw_codec.mm */; };
+		B1C5DEAC1A402F09000649E7 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C5DEAB1A402F09000649E7 /* CoreVideo.framework */; };
+		B1C5DEAE1A402F11000649E7 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C5DEAD1A402F11000649E7 /* VideoToolbox.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B1C5DE761A3EEE68000649E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1C5DE611A3EEE68000649E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B1C5DE681A3EEE68000649E7;
+			remoteInfo = hardwareCodec;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1C5DE671A3EEE68000649E7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		13A8D4581ACD184200DC650C /* hw_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hw_utils.h; sourceTree = "<group>"; };
+		13A8D4591ACD1A2200DC650C /* hw_utils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = hw_utils.mm; sourceTree = "<group>"; };
+		B13C80F81A8375F900A62E91 /* OSWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSWatcher.h; sourceTree = "<group>"; };
+		B13C80F91A8375F900A62E91 /* OSWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSWatcher.m; sourceTree = "<group>"; };
+		B1C5DE691A3EEE68000649E7 /* libhardwareCodec.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhardwareCodec.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1C5DE741A3EEE68000649E7 /* hardwareCodecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = hardwareCodecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1C5DE971A3EF000000649E7 /* VideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoEncoder.h; sourceTree = "<group>"; };
+		B1C5DE981A3EF000000649E7 /* VideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoEncoder.m; sourceTree = "<group>"; };
+		B1C5DE9A1A3EF00E000649E7 /* VideoDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDecoder.h; sourceTree = "<group>"; };
+		B1C5DE9B1A3EF00E000649E7 /* VideoDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDecoder.m; sourceTree = "<group>"; };
+		B1C5DE9F1A3FD56C000649E7 /* hw_codec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hw_codec.h; sourceTree = "<group>"; };
+		B1C5DEA01A3FD807000649E7 /* hw_codec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = hw_codec.mm; sourceTree = "<group>"; };
+		B1C5DEAB1A402F09000649E7 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		B1C5DEAD1A402F11000649E7 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1C5DE661A3EEE68000649E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1C5DEAE1A402F11000649E7 /* VideoToolbox.framework in Frameworks */,
+				B1C5DEAC1A402F09000649E7 /* CoreVideo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1C5DE711A3EEE68000649E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1C5DE751A3EEE68000649E7 /* libhardwareCodec.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1C5DE601A3EEE68000649E7 = {
+			isa = PBXGroup;
+			children = (
+				B1C5DEAD1A402F11000649E7 /* VideoToolbox.framework */,
+				B1C5DEAB1A402F09000649E7 /* CoreVideo.framework */,
+				B1C5DE6B1A3EEE68000649E7 /* hardwareCodec */,
+				B1C5DE6A1A3EEE68000649E7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1C5DE6A1A3EEE68000649E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1C5DE691A3EEE68000649E7 /* libhardwareCodec.a */,
+				B1C5DE741A3EEE68000649E7 /* hardwareCodecTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1C5DE6B1A3EEE68000649E7 /* hardwareCodec */ = {
+			isa = PBXGroup;
+			children = (
+				B1C5DEA01A3FD807000649E7 /* hw_codec.mm */,
+				B1C5DE971A3EF000000649E7 /* VideoEncoder.h */,
+				B1C5DE981A3EF000000649E7 /* VideoEncoder.m */,
+				B1C5DE9A1A3EF00E000649E7 /* VideoDecoder.h */,
+				B1C5DE9B1A3EF00E000649E7 /* VideoDecoder.m */,
+				B1C5DE9F1A3FD56C000649E7 /* hw_codec.h */,
+				B13C80F81A8375F900A62E91 /* OSWatcher.h */,
+				B13C80F91A8375F900A62E91 /* OSWatcher.m */,
+				13A8D4581ACD184200DC650C /* hw_utils.h */,
+				13A8D4591ACD1A2200DC650C /* hw_utils.mm */,
+			);
+			path = hardwareCodec;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1C5DE681A3EEE68000649E7 /* hardwareCodec */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1C5DE7D1A3EEE68000649E7 /* Build configuration list for PBXNativeTarget "hardwareCodec" */;
+			buildPhases = (
+				B1C5DE651A3EEE68000649E7 /* Sources */,
+				B1C5DE661A3EEE68000649E7 /* Frameworks */,
+				B1C5DE671A3EEE68000649E7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hardwareCodec;
+			productName = hardwareCodec;
+			productReference = B1C5DE691A3EEE68000649E7 /* libhardwareCodec.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B1C5DE731A3EEE68000649E7 /* hardwareCodecTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1C5DE801A3EEE68000649E7 /* Build configuration list for PBXNativeTarget "hardwareCodecTests" */;
+			buildPhases = (
+				B1C5DE701A3EEE68000649E7 /* Sources */,
+				B1C5DE711A3EEE68000649E7 /* Frameworks */,
+				B1C5DE721A3EEE68000649E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1C5DE771A3EEE68000649E7 /* PBXTargetDependency */,
+			);
+			name = hardwareCodecTests;
+			productName = hardwareCodecTests;
+			productReference = B1C5DE741A3EEE68000649E7 /* hardwareCodecTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1C5DE611A3EEE68000649E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = YY;
+				TargetAttributes = {
+					B1C5DE681A3EEE68000649E7 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					B1C5DE731A3EEE68000649E7 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = B1C5DE641A3EEE68000649E7 /* Build configuration list for PBXProject "hardwareCodec" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B1C5DE601A3EEE68000649E7;
+			productRefGroup = B1C5DE6A1A3EEE68000649E7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1C5DE681A3EEE68000649E7 /* hardwareCodec */,
+				B1C5DE731A3EEE68000649E7 /* hardwareCodecTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1C5DE721A3EEE68000649E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1C5DE651A3EEE68000649E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13A8D45A1ACD1A2200DC650C /* hw_utils.mm in Sources */,
+				B1C5DEA11A3FD807000649E7 /* hw_codec.mm in Sources */,
+				B1C5DE991A3EF000000649E7 /* VideoEncoder.m in Sources */,
+				B13C80FA1A8375F900A62E91 /* OSWatcher.m in Sources */,
+				B1C5DE9C1A3EF00E000649E7 /* VideoDecoder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1C5DE701A3EEE68000649E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B1C5DE771A3EEE68000649E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B1C5DE681A3EEE68000649E7 /* hardwareCodec */;
+			targetProxy = B1C5DE761A3EEE68000649E7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B1C5DE7B1A3EEE68000649E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B1C5DE7C1A3EEE68000649E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B1C5DE7E1A3EEE68000649E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				CLANG_CXX_LIBRARY = "libstdc++";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B1C5DE7F1A3EEE68000649E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				CLANG_CXX_LIBRARY = "libstdc++";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B1C5DE811A3EEE68000649E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = hardwareCodecTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B1C5DE821A3EEE68000649E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = hardwareCodecTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1C5DE641A3EEE68000649E7 /* Build configuration list for PBXProject "hardwareCodec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1C5DE7B1A3EEE68000649E7 /* Debug */,
+				B1C5DE7C1A3EEE68000649E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1C5DE7D1A3EEE68000649E7 /* Build configuration list for PBXNativeTarget "hardwareCodec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1C5DE7E1A3EEE68000649E7 /* Debug */,
+				B1C5DE7F1A3EEE68000649E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1C5DE801A3EEE68000649E7 /* Build configuration list for PBXNativeTarget "hardwareCodecTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1C5DE811A3EEE68000649E7 /* Debug */,
+				B1C5DE821A3EEE68000649E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1C5DE611A3EEE68000649E7 /* Project object */;
+}

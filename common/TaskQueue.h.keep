@@ -1,0 +1,394 @@
+#ifndef __TaskQueue_H
+#define __TaskQueue_H
+
+#include <assert.h>
+#include <list>
+#include <memory>
+#include <set>
+#include "noncopyable.h"
+#include "tinythread.h"
+
+class ITaskQueue;
+class Task;
+
+class Destroyer
+{
+public:
+	virtual ~Destroyer() {}
+	virtual void destroy(Task* p) = 0;
+};
+
+class Task
+{
+public:
+	Task(Destroyer* destroyer = NULL) : mDestroyer(destroyer) {}
+	virtual ~Task() {}
+	void destroy() { if(mDestroyer) mDestroyer->destroy(this); }
+	virtual void execute(ITaskQueue* wq, void* param) = 0;
+private:
+	Destroyer* mDestroyer;
+};
+
+class DummyDestroyer
+	: public Destroyer
+{
+public:
+	void destroy(Task* p) {}
+};
+
+class ObjectDestroyer
+	: public Destroyer
+{
+public:
+	void destroy(Task* p) { if(p) delete p;}
+};
+
+class ObjectArrayDestroyer
+	: public Destroyer
+{
+public:
+	void destroy(Task* p) { if(p) delete[] p; }
+};
+
+static DummyDestroyer __DummyDestroyer;
+static ObjectDestroyer __ObjectDestroyer;
+static ObjectArrayDestroyer __ObjectArrayDestroyer;
+#define DUMMY_DESTROYER (&__DummyDestroyer)
+#define OBJECT_DESTROYER (&__ObjectDestroyer)
+#define OBJECT_ARRAY_DESTROYER (&__ObjectArrayDestroyer)
+
+class ITaskQueue
+{
+public:
+	virtual ~ITaskQueue(){}
+	virtual bool addTask(Task* task, void* param) = 0;
+	virtual void removeTask(Task* task) = 0;
+	virtual void clear() = 0;
+	virtual void shutdown() = 0;
+};
+
+class TaskQueue
+	: public ITaskQueue,
+	public Noncopyable
+{
+public:
+	TaskQueue(int numThreads = 1) 
+		: mStop(false)
+	{
+		for(int i=0; i<numThreads; ++i) {
+			tthread::thread* t = new tthread::thread((void(*)(void*))execTaskThread, this);
+			if(t) {
+				mThreadGroup.push_back(t);
+			}
+		}
+	}
+
+	virtual ~TaskQueue()
+	{
+		shutdown();
+		clear();
+	}
+
+	virtual bool addTask(Task* task, void* param)
+	{
+		if(!task || mStop)
+			return false;
+		tthread::lock_guard<Mutex> lockGurad(mMutex);
+		mTaskGroup.push_back(std::make_pair<Task*, void*>(task,param));
+		mCond.notify_all();
+		return true;
+	}
+
+	virtual void removeTask(Task* task)
+	{
+		class FilterOut
+		{
+		public:
+			FilterOut(Task* task) : mTask(task) {}
+			bool operator() (const std::pair<Task*, void*>& t) const { return (t.first == mTask); }
+		private:
+			Task* mTask;
+		};
+
+		mTaskGroup.remove_if(FilterOut(task));
+		task->destroy();
+	}
+
+	virtual void clear() 
+	{
+		tthread::lock_guard<Mutex> lockGurad(mMutex);
+		if(mTaskGroup.empty())
+			return ;
+
+		std::set<Task*> tmpSet;
+		for(std::list<std::pair<Task*, void*> >::iterator it=mTaskGroup.begin(); it!=mTaskGroup.end(); ++it) {
+			tmpSet.insert(it->first);
+		}
+		mTaskGroup.clear();
+
+		for(std::set<Task*>::iterator it=tmpSet.begin(); it!=tmpSet.end(); ++it) {
+			(*it)->destroy();
+		}
+	}
+
+	virtual void shutdown() 
+	{
+		mMutex.lock();
+		mTaskGroup.clear();
+		if(!mTaskGroup.empty()) {
+			mStop = true;
+			mCond.notify_all();
+			std::list<tthread::thread*>::iterator it;
+			for(it=mThreadGroup.begin(); it!=mThreadGroup.end(); ++it) {
+				mMutex.unlock();
+				(*it)->join();
+				mMutex.lock();
+				delete *it;
+			}
+			mThreadGroup.clear();
+		}
+		mMutex.unlock();
+	}
+
+	virtual bool isExists(const Task* task) const 
+	{
+		if(mTaskGroup.empty())
+			return false;
+		for(std::list<std::pair<Task*, void*> >::const_iterator it=mTaskGroup.begin(); it!=mTaskGroup.end(); ++it) {
+			if(it->first == task)
+				return true;
+		}
+		return false;
+	}
+
+private:
+	virtual void run() 
+	{
+		while(!mStop) {
+			mMutex.lock();
+			while(mTaskGroup.empty())
+				mCond.wait(mMutex);
+			std::pair<Task*, void*> item = mTaskGroup.front();
+			mTaskGroup.pop_front();
+			Task* task = item.first;
+			void* param = item.second;
+			assert(task);
+			mMutex.unlock();
+
+			task->execute(this, param);
+
+			mMutex.lock();
+			if(!isExists(task))
+				task->destroy();
+			mMutex.unlock();
+		}
+	}
+
+	static void execTaskThread(TaskQueue* tq) 
+	{
+		tq->run();
+	}
+
+private:
+	typedef tthread::recursive_mutex Mutex;
+	typedef tthread::condition_variable Cond;
+	std::list<tthread::thread*> mThreadGroup;
+	std::list<std::pair<Task*, void*> > mTaskGroup;
+	bool mStop;
+	Mutex mMutex;
+	Cond mCond;
+};
+
+
+#ifdef _WIN32
+#include <Windows.h>
+class TimedTaskQueue
+	: public ITaskQueue,
+	public Noncopyable
+{
+public:
+	struct TaskItem
+	{
+		Task* task;
+		void* param;
+		long expire;
+	};
+
+	TimedTaskQueue()
+	{
+		mQuit = false;
+		mRunning = false;
+		mEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		mTaskThread = std::auto_ptr<tthread::thread>(new tthread::thread((void(*)(void*))taskQueueThread, this));
+		tthread::this_thread::sleep_for(tthread::chrono::milliseconds(1));
+	}
+
+	~TimedTaskQueue() 
+	{
+		shutdown();
+	}
+
+	bool addTask(Task* task, void* param, int delayMs)
+	{
+		if(!task || !mRunning)
+			return false;
+
+		tthread::lock_guard<Mutex> lockGuard(mMutex);
+
+		TaskItem item;
+		item.task = task;
+		item.param = param;
+		item.expire = (long)GetTickCount() + (long)delayMs;
+		if(mPendingTasks.empty()) {
+			mPendingTasks.push_back(item);
+		} else {
+			std::list<TaskItem>::iterator it;
+			for(it=mPendingTasks.begin(); it!=mPendingTasks.end(); ++it) {
+				if(it->expire - item.expire > 0) {
+					break;
+				}
+			}
+			mPendingTasks.insert(it, item);
+		}
+		SetEvent(mEvent);
+
+		return true;
+	}
+
+	virtual bool addTask(Task* task, void* param) 
+	{
+		return addTask(task, param, 0);
+	}
+
+	virtual void run() 
+	{
+		mMutex.lock();
+
+		mRunning = true;
+
+		while(!mQuit) {
+			const int minDelay = getMinDelay();
+			HRESULT rt;
+			if(!mQuit) {
+				mMutex.unlock();
+				rt = WaitForSingleObject(mEvent, minDelay);
+				ResetEvent(mEvent);
+				mMutex.lock();
+			}
+			if(WAIT_FAILED == rt) {
+				assert(0);			
+				break;
+			} else {
+				if(mQuit)
+					break;
+				while(!mPendingTasks.empty()) {
+					TaskItem taskItem = mPendingTasks.front();
+					if(taskItem.expire - (long)GetTickCount() <=0) {
+						mPendingTasks.pop_front();
+						mMutex.unlock();
+						taskItem.task->execute(this, taskItem.param);
+						mMutex.lock();
+						if(!isExists(taskItem.task))
+							taskItem.task->destroy();
+					} else {
+						break;
+					}
+				}
+			}
+		}
+
+		mRunning = false;
+		
+		mMutex.unlock();
+	}
+
+	static void taskQueueThread(TimedTaskQueue* q)
+	{
+		q->run();
+	}
+
+	virtual void removeTask(Task* task)
+	{
+		class FilterOut
+		{
+		public:
+			FilterOut(Task* task) : mTask(task) {}
+			bool operator() (const TaskItem& t) const { return (t.task == mTask); }
+		private:
+			Task* mTask;
+		};
+
+		tthread::lock_guard<Mutex> lockGuard(mMutex);
+		bool needDestroy = isExists(task);
+		mPendingTasks.remove_if(FilterOut(task));
+		if(needDestroy)
+			task->destroy();
+	}
+
+	virtual void clear() 
+	{
+		mMutex.lock();
+
+		if(mPendingTasks.empty()) {
+			mMutex.unlock();
+			return ;
+		}
+
+		std::set<Task*> tmpSet;
+		for(std::list<TaskItem>::iterator it=mPendingTasks.begin(); it!=mPendingTasks.end(); ++it) {
+			tmpSet.insert(it->task);
+		}
+		mPendingTasks.clear();
+
+		for(std::set<Task*>::iterator it=tmpSet.begin(); it!=tmpSet.end(); ++it) {
+			(*it)->destroy();
+		}
+
+		mMutex.unlock();
+	}
+
+	bool isExists(const Task* task) const 
+	{
+		if(mPendingTasks.empty())
+			return false;
+		for(std::list<TaskItem>::const_iterator it=mPendingTasks.begin(); it!=mPendingTasks.end(); ++it) {
+			if((it->task) == task)
+				return true;
+		}
+		return false;
+	}
+
+	virtual void shutdown() 
+	{
+		clear();
+		mMutex.lock();
+		mQuit = true;
+		SetEvent(mEvent);
+		mMutex.unlock();
+		mTaskThread->join();
+		CloseHandle(mEvent);
+		mEvent = NULL;
+	}
+
+	long getMinDelay() const
+	{
+		if(mPendingTasks.empty())
+			return INFINITE;
+		long delay = (mPendingTasks.front().expire) - (long)GetTickCount();
+		return delay < 0 ? 0 : delay;
+	}
+
+private:
+	typedef tthread::recursive_mutex Mutex;
+	typedef tthread::condition_variable Cond;
+	volatile bool mQuit;
+	volatile bool mRunning;
+	HANDLE mEvent;
+	std::auto_ptr<tthread::thread> mTaskThread;
+	std::list<TaskItem> mPendingTasks;
+	Mutex mMutex;
+	Cond mCond;
+};
+#endif // _WIN32
+
+#endif // __TaskQueue_H
