@@ -16,6 +16,9 @@ class Listener
 public:
     virtual ~Listener(){}
     virtual void onLog(std::string log) = 0;
+    virtual void setvalue(int value) = 0;
+protected:
+    int v;
 };
 
 class Log
@@ -42,23 +45,34 @@ class Instance : public Listener
 {
 public:
     virtual void onLog(std::string log) {
-        printf("[p:%d][l:%p][%s]\n", getpid(), this, log.c_str());
+        printf("[p:%d][l:%p][v:%d][%s]\n", getpid(), this, v, log.c_str());
     }
     
+    virtual void setvalue(int value) {
+        v = value; 
+    }
 };
 
 int main()
 {
     Instance * ins = new Instance();
+    ins->setvalue(1);
     Log::setListener(ins);
 
     int pid = fork();
     if (pid == 0) {
+    #if 0
         Instance * another = new Instance();
+        another->setvalue(2);
         Log::setListener(another);
+    #else
+        //ins->setvalue(2);
+    #endif
+    } else {
+        ins->setvalue(3);
     }
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 3; i++) {
         char buf[10] = {0};
         snprintf(buf, 10, "now:%d", i);
         Log::verbose(buf);

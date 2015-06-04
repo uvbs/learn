@@ -98,7 +98,7 @@ int main(int argc, char * argv[])
             salary - tax);
 #else
         //calculate Annual bonus
-        double money = atof(argv[i]) * 12.0;
+        double money = atof(argv[i]);
         if (money < 0) {
             printf("invalid annual bonus:%f\n", money);
             continue;
