@@ -1,0 +1,15 @@
+
+# add for oracle by sudoku.huang@2015.07.10
+export ORACLE_BASE=/opt/oracle         # 我的配置为/home/xxxx/app/oracle
+export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1
+export ORACLE_SID=orcl
+export ORACLE_UNQNAME=orcl
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
+export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK
+export PATH=${PATH}:${ORACLE_HOME}/bin/;
+
+# add for jdk by sudoku.huang@2015.07.11 01:09:00
+export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_79
+export JRE_HOME=/usr/lib/jvm/jdk1.7.0_79/jre
+export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib
+export PATH=$PATH:$JAVA_HOME/bin
