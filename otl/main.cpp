@@ -72,6 +72,29 @@ void get_column_attr(otl_connect& conn)
     std::cout << "end get_column_attr" << std::endl;
 }
 
+void select_bind(otl_connect& conn)
+{
+    std::cout << "begin select" << std::endl;
+
+    std::string strSQL = "select * from sudoku.test where age = :age<int>";
+    otl_stream otl_str;
+    otl_str.open(100, strSQL.c_str(), conn);
+    otl_str << 10;
+
+    char username[20], password[20], address[100];
+    int age, sex;
+
+    while (!otl_str.eof()) {
+        otl_str >> username >> password >> age >> sex >> address;
+
+        std::cout << username << ", " << password << ", " << age << ", " << sex <<  std::endl;
+    }
+    otl_str.close();
+
+    std::cout << "end select" << std::endl;
+    return ;
+}
+
 int main(int argc, char * argv[])
 {
     otl_connect::otl_initialize();
@@ -82,11 +105,12 @@ int main(int argc, char * argv[])
         db.rlogon(CONN_STR);
         std::cout << "login in succ" << std::endl;
 
-        select(db);
-        insert(db);
-        select(db);
+        //select(db);
+        //insert(db);
+        //select(db);
+        select_bind(db);
 
-        get_column_attr(db);
+        //get_column_attr(db);
 
     } catch (otl_exception& p) {
         std::cerr << "error" << std::endl;
